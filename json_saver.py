@@ -11,8 +11,5 @@ class JSONSaver(HhApi, SuperJobApi):
         api = [api_h.get_api(), api_s.get_api()]
 
         with open("jobs.json", "w", encoding="utf-8") as f:
-            print(json.dump(api, f, sort_keys=False, indent=2, ensure_ascii=False))
+            json.dump(api, f, sort_keys=False, indent=2, ensure_ascii=False)
 
-
-file = JSONSaver()
-print(file.save_as_json())

@@ -1,26 +1,14 @@
-from hh_api import HhApi
-from superjob_api import SuperJobApi
+import json
+from json_saver import JSONSaver
 from pprint import pprint
 
 
-class Vacancy(HhApi, SuperJobApi):
-    def __init__(self):
+class Vacancy(JSONSaver):
+
+    def __init__(self, title, url, salary_min, salary_max, requirement):
         super().__init__()
-
-
- def get_vacancy(self):
-        vacancy = []
-        for el in self.get_api['items']:
-            title = el['name']
-            id_v = el['id']
-            salary = el['salary']
-            requirement = el['snippet']['requirement']
-            job = {"title": title,
-                   "id": id_v,
-                   "salary": salary,
-                   "requirement": requirement}
-        vacancy.append(job)
-        return vacancy
-
-v = Vacancy()
-pprint(v.name)
+        self.title = title
+        self.url = url
+        self.salary_min = salary_min
+        self.salary_max = salary_max
+        self.requirement = requirement
