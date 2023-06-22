@@ -3,12 +3,19 @@ from json_saver import JSONSaver
 from pprint import pprint
 
 
-class Vacancy(JSONSaver):
+class Vacancy:
 
     def __init__(self, title, url, salary_min, salary_max, requirement):
-        super().__init__()
         self.title = title
         self.url = url
         self.salary_min = salary_min
         self.salary_max = salary_max
         self.requirement = requirement
+
+    def __str__(self):
+        return f"{self.title}, {self.url}, {self.salary_min}, {self.salary_max}, {self.requirement}"
+
+
+
+
+
