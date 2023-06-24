@@ -1,15 +1,52 @@
 import json
-from hh_api import HhApi
-from superjob_api import SuperJobApi
+from abc import ABC, abstractmethod
+from pprint import pprint
+
+from vacancy import Vacancy
 
 
-class JSONSaver(HhApi, SuperJobApi):
+class AbstractSaver(ABC):
+    @abstractmethod
+    def save_vacancies(self, vacancies):
+        pass
+
+    @abstractmethod
+    def load_vacancies(self):
+        pass
+
+
+class JSONSaver(AbstractSaver):
     """Класс, который сохраняет все вакансии в json файл."""
-    def save_as_json(self):
-        api_h = HhApi()
-        api_s = SuperJobApi()
-        api = [api_h.get_api(), api_s.get_api()]
 
-        with open("jobs.json", "w", encoding="utf-8") as f:
-            json.dump(api, f, sort_keys=False, indent=2, ensure_ascii=False)
+    def __init__(self, path):
+        self.__path = path
+
+    def __save_data(self, data):
+        with open(self.__path, "w", encoding="utf-8") as f:
+            json.dump(data, f, sort_keys=False, indent=2, ensure_ascii=False)
+
+    def __load_data(self):
+        with open(self.__path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            return data
+
+    def save_vacancies(self, vacancies):
+        vacancies_data = []
+        for el in vacancies:
+            vacancies_data.append(el.as_dict())
+        self.__save_data(vacancies_data)
+
+    def load_vacancies(self):
+        dict_vacancies = self.__load_data()
+        vacancies = []
+        for el in dict_vacancies:
+            new_vac = Vacancy(el['title'], el['url'], el['salary_min'], el['salary_max'], el['requirement'])
+            vacancies.append(new_vac)
+        return vacancies
+
+
+
+# vac = Vacancy("Python", "http/python", 50000, 100000, "Knowing Python")
+j = JSONSaver("test.json")
+print(j.load_vacancies())
 

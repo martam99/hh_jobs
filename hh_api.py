@@ -10,7 +10,10 @@ class HhApi(GetApi):
 
     def get_api(self):
         """Метод для получения вакансий """
-        return requests.get(self.api_url).json()
+        response = requests.get(self.api_url)
+        if response.status_code != 200:
+            return f"Ошибка подключения к api с кодом {response.status_code}"
+        return response.json()['items']
 
 
 hh = HhApi()
