@@ -34,7 +34,7 @@ class JSONSaver(AbstractSaver):
         vacancies_data = []
         for el in vacancies:
             vacancies_data.append(el.as_dict())
-        self.__save_data(vacancies_data)
+            self.__save_data(vacancies_data)
 
     def load_vacancies(self):
         dict_vacancies = self.__load_data()
@@ -45,8 +45,8 @@ class JSONSaver(AbstractSaver):
         return vacancies
 
 
-
-# vac = Vacancy("Python", "http/python", 50000, 100000, "Knowing Python")
+vac_1 = Vacancy("Mariam", "http/mar.com", 12000, 14000, "Knowing mmm")
 j = JSONSaver("test.json")
-print(j.load_vacancies())
+j.save_vacancies([vac_1])
+pprint(j.load_vacancies())
 

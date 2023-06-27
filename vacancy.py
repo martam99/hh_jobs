@@ -12,6 +12,7 @@ class Vacancy:
 
     def __repr__(self):
         return self.__str__()
+
     def as_dict(self):
         vacancy = {"title": self.title,
                    "url": self.url,
@@ -19,10 +20,5 @@ class Vacancy:
                    "salary_max": self.salary_max,
                    "requirement": self.requirement
 
-
-        }
+                   }
         return vacancy
-
-
-
-

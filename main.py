@@ -1,53 +1,42 @@
+from hh_api import HhApi
+from superjob_api import SuperJobApi
+from json_saver import JSONSaver
 from vacancy import Vacancy
-import json
-from pprint import pprint
 
 
 def main():
+    hh = HhApi()
+    sj = SuperJobApi()
+    j = JSONSaver("data.json")
+    platforms = ["Head Hunter", "Super Job"]
+    user_platform = input(f"Выберите платформу для поиска вакансий ]\n1){platforms[0]}\n2){platforms[1]}")
+    user_input = input("Введите название вакансии:")
     try:
-        with open("jobs.json", "r", encoding='utf-8') as file:
-            vacancies = json.load(file)
-            list_job = []
-            # Достали значения из файла json
-            for el in vacancies[0]:
-                title_hh = el['name']
-                salary_min_hh = el['salary']['from']
-                salary_max_hh = el['salary']['to']
-                url_hh = el['area']['url']
-                requirement_hh = el['snippet']['requirement']
-                # Создали экземпляр класса Vacancy со значениями из платформы hh.ru
-            v = Vacancy(title_hh, salary_min_hh, salary_max_hh, url_hh, requirement_hh)
-            list_job.append(v.dict_for_vacancies())
-        pprint(list_job)
-                # Добавили экземпляры в список list_job
-            # Достали значения из файла json
-            # for el in vacancies[1]:
-            #     title_sj = el['profession']
-            #     salary_min_sj = el["payment_from"]
-            #     salary_max_sj = el["payment_to"]
-            #     url_sj = el["client"]["link"]
-            #     requirement_sj = el["candidat"]
-            #     # Создали экземпляр класса Vacancy со значениями из платформы superjob.ru
-            #     v_sj = Vacancy(title_sj, salary_min_sj, salary_max_sj, url_sj, requirement_sj)
-            #     # Добавили экземпляры в список list_job
-    #             list_job.extend((v_hh.dict_for_vacancies(), v_sj.dict_for_vacancies()))
-    except FileNotFoundError:
-        print("File not found")
+        if user_platform == "1":
+            for el in hh.get_api():
+                vac_hh = Vacancy(el['name'], el['salary']['from'], el['salary']['to'], el['area']['url'],
+                                 el['snippet']['requirement'])
+                if user_input == vac_hh.title:
+                    j.save_vacancies([vac_hh])
+                    print(j.load_vacancies())
+            else:
+                print("Нет вакансий, соответствующих заданным критериям.")
+        elif user_platform == "2":
+            for el in sj.get_api():
+                vac_sj = Vacancy(el['profession'], el["payment_from"], el["payment_to"], el["client"]["link"],
+                                 el["candidat"])
+                if user_input == vac_sj.title:
+                    j.save_vacancies([vac_sj])
+                    print(j.load_vacancies())
+            else:
+                print("Нет вакансий, соответствующих заданным критериям.")
+        elif user_platform != "1" or "2":
+            print("Такой платформы не существует")
+
+    except TypeError:
+        print(" ")
     except KeyError:
-        print("No key")
-
-    for hh in list_job:
-        user_input = input("Введите поисковый запрос: ")
-        if user_input == hh['Вакансия']:
-            pprint(hh)
-        else:
-            print(f"Нет вакансий, соответствующих заданным критериям.")
-
-    # input_max_salary = int(input("Максимальная сумма зарплаты до։ "))
-    # if input_max_salary <= :
-    #     print()
-    # elif input_max_salary > v_hh.salary_max or v_sj.salary_max:
-    #     print(f"Нет вакансий, соответствующих заданным критериям.")
+        print(" ")
 
 
 if __name__ == "__main__":
