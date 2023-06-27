@@ -45,8 +45,3 @@ class JSONSaver(AbstractSaver):
         return vacancies
 
 
-vac_1 = Vacancy("Mariam", "http/mar.com", 12000, 14000, "Knowing mmm")
-j = JSONSaver("test.json")
-j.save_vacancies([vac_1])
-pprint(j.load_vacancies())
-

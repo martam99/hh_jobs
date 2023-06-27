@@ -14,7 +14,3 @@ class HhApi(GetApi):
         if response.status_code != 200:
             return f"Ошибка подключения к api с кодом {response.status_code}"
         return response.json()['items']
-
-
-hh = HhApi()
-pprint(hh.get_api())

@@ -19,6 +19,3 @@ class SuperJobApi(GetApi):
             return f"Ошибка подключения к api с кодом {response.status_code}"
         return response.json()['objects']
 
-
-s = SuperJobApi()
-pprint(s.get_api())
